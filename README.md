@@ -100,14 +100,31 @@ KnowMyWorld/
 ---
 
 ##  Installation & Setup
-
-### Prerequisites
-- Drupal installed  
-- Python 3.x  
-- MySQL or PostgreSQL  
+   
 
 ### Setup Steps
-1. Clone the repository  
+1. Clone the repository 
+
+      ```bash
+git clone git@github.com:FaithChepkemoi/KnowMyWorld_Frontend.git
+# Or HTTPS
+git clone https://github.com/FaithChepkemoi/KnowMyWorld_Frontend.git
+
+2. Navigate into the project folder
+
+     ```bash
+    cd KnowMyWorld_Frontend
+
+3. Team Branching
+    Create a new branch from main
+
+    ```bash
+ git checkout -b feature/your-feature-name
+
+4. Make your changes in the branch.
+
+
+
 2. Set up the Drupal frontend  
 3. Configure Python backend services  
 4. Connect the database  
