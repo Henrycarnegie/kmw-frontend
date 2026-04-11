@@ -4,6 +4,7 @@ import * as motion from "framer-motion/client";
 import { Heart, CreditCard, ShieldCheck } from "lucide-react";
 import Button from "../../../components/ui/Button";
 import { useState } from "react";
+import TextInput from "@/src/components/ui/TextInput";
 
 export default function DonatePage() {
    const [amount, setAmount] = useState<number | null>(50);
@@ -82,45 +83,42 @@ export default function DonatePage() {
                            </h3>
                            <div className="grid grid-cols-2 gap-3 mb-3">
                               {presetAmounts.map((amt) => (
-                                 <button
+                                 <Button
                                     key={amt}
                                     onClick={() => {
                                        setAmount(amt);
                                        setCustomAmount("");
                                     }}
-                                    className={`py-3 rounded-xl border-2 font-bold text-lg transition-all ${
-                                       amount === amt && !customAmount
-                                          ? "border-blue-600 bg-blue-50 text-blue-600"
-                                          : "border-gray-200 text-gray-700 hover:border-gray-300"
-                                    }`}
+
+                                    variant={`${amount === amt && !customAmount ? "primary" : "outline"}`}
+                                    className={`${amount === amt && !customAmount && "bg-blue-100! text-blue-500! border border-blue-200"}`}
+                                    size="lg"
                                  >
                                     ${amt}
-                                 </button>
+                                 </Button>
                               ))}
                            </div>
                            <div className="relative">
                               <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-bold">
                                  $
                               </span>
-                              <input
-                                 type="number"
+                              <TextInput 
                                  placeholder="Custom Amount"
+                                 type="number"
+                                 name="customAmount"
                                  value={customAmount}
                                  onChange={(e) => {
                                     setCustomAmount(e.target.value);
                                     setAmount(null);
                                  }}
-                                 className={`w-full py-3 pl-8 pr-4 rounded-xl border-2 outline-none font-bold text-lg transition-colors ${
-                                    customAmount
-                                       ? "border-blue-600 bg-blue-50 text-blue-600"
-                                       : "border-gray-200 text-gray-700 focus:border-blue-400"
-                                 }`}
+                                 className={`text-lg font-bold`}
+
                               />
                            </div>
                         </div>
 
-                        <Button className="w-full flex items-center justify-center gap-2 py-4 text-lg bg-blue-600 border border-blue-700">
-                           <CreditCard className="w-5 h-5" />
+                        <Button variant="primary" className="bg-blue-500 text-lg text-white" size="lg">
+                           <CreditCard className="w-7 h-7 text-white" />
                            Donate{" "}
                            {amount
                               ? `$${amount}`

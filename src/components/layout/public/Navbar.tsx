@@ -23,7 +23,7 @@ const Navbar = () => {
    return (
       <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/90 backdrop-blur-md px-5 md:px-10 py-4">
          <nav className="flex items-center justify-between bg">
-            <Link href={"/"} className="inline-flex items-center gap-4">
+            <Link href={"/"} className="inline-flex items-center gap-2 font-semibold">
                {<Globe2 className="size-10 text-blue-500" />} Know My World
             </Link>
 
@@ -76,6 +76,7 @@ const Navbar = () => {
                               variant={
                                  pathName === link.href ? "active" : "text"
                               }
+                              className="block!"
                            >
                               {link.label}
                            </Button>
