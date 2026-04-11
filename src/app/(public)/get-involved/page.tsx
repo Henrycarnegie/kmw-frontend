@@ -1,12 +1,12 @@
-import Layout from "../../components/layout/Layout";
-import SectionHeading from "../../components/ui/SectionHeading";
+import SectionHeading from "../../../components/ui/SectionHeading";
 import * as motion from "framer-motion/client";
 import { CalendarDays, MessageSquare, Handshake } from "lucide-react";
-import Button from "../../components/ui/Button";
+import Button from "../../../components/ui/Button";
+import TextInput from "@/src/components/ui/TextInput";
 
 export default function GetInvolvedPage() {
    return (
-      <Layout>
+      <>
          {/* Collaborative Hero section */}
          <div className="relative bg-white py-20 pb-32">
             <div className="container mx-auto px-6 text-center max-w-4xl">
@@ -45,18 +45,14 @@ export default function GetInvolvedPage() {
                <div className="bg-blue-600 rounded-3xl p-8 flex flex-col md:flex-row items-center justify-between shadow-2xl text-white">
                   <div className="mb-4 md:mb-0">
                      <h3 className="text-2xl font-bold mb-2">
-                        Subscribe to our Newsletter
+                        Join our membership
                      </h3>
                      <p className="text-blue-100">
-                        Get the latest updates on events and courses.
+                        Get the latest updates on webinars and courses.
                      </p>
                   </div>
                   <div className="flex w-full md:w-auto">
-                     <input
-                        type="email"
-                        placeholder="Your email address"
-                        className="px-4 py-3 rounded-l-lg text-gray-900 w-full md:w-64 focus:outline-none"
-                     />
+                     <TextInput name="email" type="email" placeholder="Your email address" className="rounded-r-none"/>
                      <button className="bg-gray-900 px-6 py-3 rounded-r-lg font-bold hover:bg-black transition-colors">
                         Subscribe
                      </button>
@@ -139,6 +135,6 @@ export default function GetInvolvedPage() {
                </div>
             </div>
          </section>
-      </Layout>
+      </>
    );
 }

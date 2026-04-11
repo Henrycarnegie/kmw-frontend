@@ -1,5 +1,4 @@
-import Layout from "../../components/layout/Layout";
-import SectionHeading from "../../components/ui/SectionHeading";
+import SectionHeading from "../../../components/ui/SectionHeading";
 import * as motion from "framer-motion/client";
 import { Target, Users, Lightbulb, Handshake, GlobeIcon } from "lucide-react";
 
@@ -95,7 +94,7 @@ export default function AboutPage() {
    ];
 
    return (
-      <Layout>
+      <>
          {/* Hero Header */}
          <div className="relative bg-gray-50 py-20 overflow-hidden">
             <div className="absolute top-0 right-0 -translate-y-12 translate-x-1/4 opacity-10 filter blur-3xl pointer-events-none">
@@ -112,7 +111,15 @@ export default function AboutPage() {
                      About Know My World
                   </h1>
                   <p className="text-xl text-gray-600 max-w-7xl mx-auto">
-                     As global educators, the co-founders of Know My World always understood that educating a child went far beyond their academic abilities. We established this organization in 2010 with a mission to support the cultivation of social, emotional, and cultural competencies in classrooms around the world. We believe that every child, when guided, and provided the right opportunities, is able to tap into their full potential and create meaningful contributions to the world.
+                     As global educators, the co-founders of Know My World
+                     always understood that educating a child went far beyond
+                     their academic abilities. We established this organization
+                     in 2010 with a mission to support the cultivation of
+                     social, emotional, and cultural competencies in classrooms
+                     around the world. We believe that every child, when guided,
+                     and provided the right opportunities, is able to tap into
+                     their full potential and create meaningful contributions to
+                     the world.
                   </p>
                </motion.div>
             </div>
@@ -135,10 +142,21 @@ export default function AboutPage() {
                         What Do We Do?
                      </h2>
                      <p className="text-lg text-gray-600 leading-relaxed mb-6">
-                        Know My World delivers research-based professional development training for educators, both online and in person, focused on building social, emotional, and cultural competencies. We help teachers apply these skills in their own lives and integrate them into student learning through best-practice educational approaches. 
+                        Know My World delivers research-based professional
+                        development training for educators, both online and in
+                        person, focused on building social, emotional, and
+                        cultural competencies. We help teachers apply these
+                        skills in their own lives and integrate them into
+                        student learning through best-practice educational
+                        approaches.
                      </p>
                      <p className="text-lg text-gray-600 leading-relaxed">
-                        Additionally, we facilitate student-centered virtual cross-cultural exchange programs that connect classrooms globally through digital journaling, Design Thinking, and project-based learning—empowering educators and students to deepen self-awareness, expand cultural understanding, and create meaningful social impact.
+                        Additionally, we facilitate student-centered virtual
+                        cross-cultural exchange programs that connect classrooms
+                        globally through digital journaling, Design Thinking,
+                        and project-based learning—empowering educators and
+                        students to deepen self-awareness, expand cultural
+                        understanding, and create meaningful social impact.
                      </p>
                   </motion.div>
 
@@ -216,6 +234,6 @@ export default function AboutPage() {
                </div>
             </div>
          </section>
-      </Layout>
+      </>
    );
 }

@@ -1,9 +1,8 @@
 "use client";
 
-import Layout from "../../components/layout/Layout";
 import * as motion from "framer-motion/client";
 import { Heart, CreditCard, ShieldCheck } from "lucide-react";
-import Button from "../../components/ui/Button";
+import Button from "../../../components/ui/Button";
 import { useState } from "react";
 
 export default function DonatePage() {
@@ -14,7 +13,7 @@ export default function DonatePage() {
    const presetAmounts = [25, 50, 100, 250];
 
    return (
-      <Layout>
+      <>
          <div className="bg-gray-50 py-20 min-h-screen flex items-center">
             <div className="container mx-auto px-6 max-w-6xl">
                <div className="flex flex-col lg:flex-row gap-16 items-center">
@@ -137,6 +136,6 @@ export default function DonatePage() {
                </div>
             </div>
          </div>
-      </Layout>
+      </>
    );
 }

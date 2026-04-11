@@ -1,9 +1,9 @@
-import Layout from "../../components/layout/Layout";
-import SectionHeading from "../../components/ui/SectionHeading";
+import SectionHeading from "../../../components/ui/SectionHeading";
 import * as motion from "framer-motion/client";
 import { BookOpen, Star, Clock, ArrowRight } from "lucide-react";
-import Button from "../../components/ui/Button";
+import Button from "../../../components/ui/Button";
 import Link from "next/link";
+import Badge from "@/src/components/ui/Badge";
 
 const courses = [
    {
@@ -34,7 +34,7 @@ const courses = [
 
 export default function SELProgramPage() {
    return (
-      <Layout>
+      <>
          {/* Hero Header */}
          <div className="bg-blue-900 text-white py-20 relative overflow-hidden">
             {/* Abstract Background pattern */}
@@ -91,9 +91,7 @@ export default function SELProgramPage() {
 
                         <div className="p-6 flex-1 flex flex-col">
                            <div className="flex items-center justify-between mb-3">
-                              <span className="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded-md">
-                                 {course.level}
-                              </span>
+                              <Badge variant={course.level}>{course.level}</Badge>
                               <div className="flex items-center text-yellow-500 text-sm font-medium">
                                  <Star className="w-4 h-4 fill-current mr-1" />
                                  {course.rating}
@@ -113,10 +111,10 @@ export default function SELProgramPage() {
                                  {course.duration}
                               </div>
                               <Link href="#">
-                                 <button className="text-blue-600 font-semibold text-sm hover:text-blue-800 flex items-center">
+                                 <Button variant="text" className="font-semibold text-blue-600! hover:text-blue-800 hover:bg-transparent! flex items-center">
                                     Enroll{" "}
                                     <ArrowRight className="w-4 h-4 ml-1" />
-                                 </button>
+                                 </Button>
                               </Link>
                            </div>
                         </div>
@@ -134,6 +132,6 @@ export default function SELProgramPage() {
                </div>
             </div>
          </section>
-      </Layout>
+      </>
    );
 }

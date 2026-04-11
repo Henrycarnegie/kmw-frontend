@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Globe2, Menu } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import Button from "../ui/Button";
+import Button from "../../ui/Button";
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 
@@ -21,7 +21,7 @@ const Navbar = () => {
    const [onClick, setOnClick] = useState(false);
 
    return (
-      <header className="sticky top-0 z-50 border-b border-border bg-card/90 backdrop-blur-md px-5 md:px-10 py-4">
+      <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/90 backdrop-blur-md px-5 md:px-10 py-4">
          <nav className="flex items-center justify-between bg">
             <Link href={"/"} className="inline-flex items-center gap-4">
                {<Globe2 className="size-10 text-blue-500" />} Know My World
@@ -86,7 +86,9 @@ const Navbar = () => {
                            <Button className="text-center!">Login</Button>
                         </Link>
                         <Link href={"/donate"} className="w-full">
-                           <Button variant="secondary" className="text-center!">Donate</Button>
+                           <Button variant="secondary" className="text-center!">
+                              Donate
+                           </Button>
                         </Link>
                      </div>
                   </nav>

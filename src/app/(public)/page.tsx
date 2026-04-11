@@ -1,4 +1,3 @@
-import Layout from "../components/layout/Layout";
 import {
    BookOpen,
    Users,
@@ -6,10 +5,12 @@ import {
    HandHeart,
    Play,
    ArrowRight,
+   GraduationCap,
+   Star,
 } from "lucide-react";
-import SectionHeading from "../components/ui/SectionHeading";
-import FeatureCard from "../components/ui/FeatureCard";
-import Button from "../components/ui/Button";
+import SectionHeading from "../../components/ui/SectionHeading";
+import FeatureCard from "../../components/ui/FeatureCard";
+import Button from "../../components/ui/Button";
 import Link from "next/link";
 import * as motion from "framer-motion/client";
 
@@ -41,8 +42,31 @@ const Index = () => {
       },
    ];
 
+   const stats = [
+      {
+         value: "50,000+",
+         label: "Students Reached",
+         icon: <GraduationCap className="h-8 w-8 text-blue-400 mx-auto mb-2" />,
+      },
+      {
+         value: "120+",
+         label: "Countries Connected",
+         icon: <Globe className="h-8 w-8 text-blue-400 mx-auto mb-2" />,
+      },
+      {
+         value: "2,500+",
+         label: "Educators Trained",
+         icon: <Users className="h-8 w-8 text-blue-400 mx-auto mb-2" />,
+      },
+      {
+         value: "95%",
+         label: "Satisfaction Rate",
+         icon: <Star className="h-8 w-8 text-blue-400 mx-auto mb-2" />,
+      },
+   ];
+
    return (
-      <Layout>
+      <>
          {/* HERO SECTION */}
          <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
             {/* Background Decorations */}
@@ -113,6 +137,32 @@ const Index = () => {
             </div>
          </section>
 
+         {/* Stats */}
+         <section className="bg-card border-y border-gray-200">
+            <div className="container mx-auto px-6 py-8 md:py-10">
+               <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+                  {stats.map((stat, i) => (
+                     <motion.div
+                        key={stat.label}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: i * 0.1 }}
+                        className="text-center"
+                     >
+                        {stat.icon}
+                        <p className="text-3xl md:text-4xl font-display font-bold text-foreground">
+                           {stat.value}
+                        </p>
+                        <p className="text-sm text-muted-foreground mt-1">
+                           {stat.label}
+                        </p>
+                     </motion.div>
+                  ))}
+               </div>
+            </div>
+         </section>
+
          {/* FEATURES SECTION */}
          <section className="py-24 bg-gray-50/50">
             <div className="container mx-auto px-6">
@@ -168,7 +218,7 @@ const Index = () => {
                </div>
             </div>
          </section>
-      </Layout>
+      </>
    );
 };
 
