@@ -7,6 +7,8 @@ import Link from "next/link";
 import Button from "../../ui/Button";
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import { signIn } from "next-auth/react";
+import { useAuth } from "@/src/hooks/useAuth";
 
 const Navbar = () => {
    const pathName = usePathname();
@@ -17,13 +19,16 @@ const Navbar = () => {
       { href: "/about", label: "About" },
       { href: "/blog", label: "Blog" },
    ];
-
+   const { isAuthenticated, login, logout } = useAuth();
    const [onClick, setOnClick] = useState(false);
 
    return (
       <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/90 backdrop-blur-md px-5 md:px-10 py-4">
          <nav className="flex items-center justify-between bg">
-            <Link href={"/"} className="inline-flex items-center gap-2 font-semibold">
+            <Link
+               href={"/"}
+               className="inline-flex items-center gap-2 font-semibold"
+            >
                {<Globe2 className="size-10 text-blue-500" />} Know My World
             </Link>
 
@@ -40,9 +45,13 @@ const Navbar = () => {
             </div>
 
             <div className="hidden md:flex gap-4">
-               <Link href={"/login"}>
-                  <Button>Login</Button>
-               </Link>
+               {/* Login */}
+               <Button
+                  variant={isAuthenticated ? "danger" : "primary"}
+                  onClick={isAuthenticated ? logout : login}
+               >
+                  {isAuthenticated ? "Logout" : "Login"}
+               </Button>
                <Link href={"/donate"}>
                   <Button variant="secondary">Donate</Button>
                </Link>
@@ -84,7 +93,12 @@ const Navbar = () => {
                      ))}
                      <div className="md:hidden w-full flex gap-4">
                         <Link href={"/login"} className="w-full">
-                           <Button className="text-center!">Login</Button>
+                           <Button
+                              onClick={() => signIn("google")}
+                              className="text-center!"
+                           >
+                              Login
+                           </Button>
                         </Link>
                         <Link href={"/donate"} className="w-full">
                            <Button variant="secondary" className="text-center!">
