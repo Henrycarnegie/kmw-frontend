@@ -9,7 +9,6 @@ export const useAuth = () => {
     user: session?.user,
     isLoading: status === "loading",
     isAuthenticated: status === "authenticated",
-    isUnauthenticated: status === "unauthenticated",
     login: () => signIn("google"),
     logout: () => signOut(),
   };

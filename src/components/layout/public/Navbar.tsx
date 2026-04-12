@@ -7,8 +7,9 @@ import Link from "next/link";
 import Button from "../../ui/Button";
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { signIn } from "next-auth/react";
 import { useAuth } from "@/src/hooks/useAuth";
+import Image from "next/image";
+import LightBox from "../../ui/LightBox";
 
 const Navbar = () => {
    const pathName = usePathname();
@@ -19,8 +20,10 @@ const Navbar = () => {
       { href: "/about", label: "About" },
       { href: "/blog", label: "Blog" },
    ];
-   const { isAuthenticated, login, logout } = useAuth();
+   const { user, isAuthenticated, login, logout } = useAuth();
    const [onClick, setOnClick] = useState(false);
+
+   const [ openLightBox , setOpenLightBox] = useState(false);
 
    return (
       <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/90 backdrop-blur-md px-5 md:px-10 py-4">
@@ -46,16 +49,40 @@ const Navbar = () => {
 
             <div className="hidden md:flex gap-4">
                {/* Login */}
-               <Button
-                  variant={isAuthenticated ? "danger" : "primary"}
-                  onClick={isAuthenticated ? logout : login}
-               >
-                  {isAuthenticated ? "Logout" : "Login"}
-               </Button>
+               {!isAuthenticated ? (
+                  <Button variant="primary" onClick={login}>
+                     Login
+                  </Button>
+               ) : (
+                  <Button variant="text" onClick={() => setOpenLightBox(prev => !prev)}>
+                     {user?.image && (
+                        <Image
+                           src={user.image}
+                           alt={user.name || "User"}
+                           width={24}
+                           height={24}
+                           className="rounded-full"
+                        />
+                     )}
+                     {user?.name}
+                  </Button>
+               )}
                <Link href={"/donate"}>
                   <Button variant="secondary">Donate</Button>
                </Link>
             </div>
+
+            {isAuthenticated && openLightBox && (
+               <LightBox>
+                  <div className="flex flex-col gap-4">
+                     {user?.email}
+                     <Button variant="primary">Courses</Button>
+                     <Button variant="danger" onClick={logout}>
+                        Logout
+                     </Button>
+                  </div>
+               </LightBox>
+            )}
 
             <div className="md:hidden">
                <Button
@@ -91,20 +118,30 @@ const Navbar = () => {
                            </Button>
                         </Link>
                      ))}
-                     <div className="md:hidden w-full flex gap-4">
-                        <Link href={"/login"} className="w-full">
-                           <Button
-                              onClick={() => signIn("google")}
-                              className="text-center!"
-                           >
-                              Login
-                           </Button>
-                        </Link>
+                     <div className="md:hidden w-full space-y-4">
                         <Link href={"/donate"} className="w-full">
                            <Button variant="secondary" className="text-center!">
                               Donate
                            </Button>
                         </Link>
+                        {!isAuthenticated ? (
+                           <Button variant="primary" onClick={login}>
+                              Login
+                           </Button>
+                        ) : (
+                           <Button variant="text">
+                              {user?.image && (
+                                 <Image
+                                    src={user.image}
+                                    alt={user.name || "User"}
+                                    width={24}
+                                    height={24}
+                                    className="rounded-full"
+                                 />
+                              )}
+                              {user?.name}
+                           </Button>
+                        )}
                      </div>
                   </nav>
                </motion.div>
