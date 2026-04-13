@@ -23,7 +23,7 @@ const Navbar = () => {
    const { user, isAuthenticated, login, logout } = useAuth();
    const [onClick, setOnClick] = useState(false);
 
-   const [ openLightBox , setOpenLightBox] = useState(false);
+   const [openLightBox, setOpenLightBox] = useState(false);
 
    return (
       <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/90 backdrop-blur-md px-5 md:px-10 py-4">
@@ -54,35 +54,40 @@ const Navbar = () => {
                      Login
                   </Button>
                ) : (
-                  <Button variant="text" onClick={() => setOpenLightBox(prev => !prev)}>
-                     {user?.image && (
-                        <Image
-                           src={user.image}
-                           alt={user.name || "User"}
-                           width={24}
-                           height={24}
-                           className="rounded-full"
-                        />
+                  <div className="relative">
+                     <Button
+                        variant="text"
+                        onClick={() => setOpenLightBox((prev) => !prev)}
+                     >
+                        {user?.image && (
+                           <Image
+                              src={user.image}
+                              alt={user.name || "User"}
+                              width={24}
+                              height={24}
+                              className="rounded-full"
+                           />
+                        )}
+                        {user?.name}
+                     </Button>
+
+                     {openLightBox && (
+                        <LightBox onClick={() => setOpenLightBox(false)}>
+                           <div className="flex flex-col gap-4">
+                              {user?.email}
+                              <Button variant="primary">Courses</Button>
+                              <Button variant="danger" onClick={logout}>
+                                 Logout
+                              </Button>
+                           </div>
+                        </LightBox>
                      )}
-                     {user?.name}
-                  </Button>
+                  </div>
                )}
                <Link href={"/donate"}>
                   <Button variant="secondary">Donate</Button>
                </Link>
             </div>
-
-            {isAuthenticated && openLightBox && (
-               <LightBox>
-                  <div className="flex flex-col gap-4">
-                     {user?.email}
-                     <Button variant="primary">Courses</Button>
-                     <Button variant="danger" onClick={logout}>
-                        Logout
-                     </Button>
-                  </div>
-               </LightBox>
-            )}
 
             <div className="md:hidden">
                <Button
