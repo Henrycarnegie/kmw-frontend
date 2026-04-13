@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import { Globe2, Menu } from "lucide-react";
-import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Button from "../../ui/Button";
 import { AnimatePresence } from "framer-motion";
@@ -10,16 +9,12 @@ import { useState } from "react";
 import { useAuth } from "@/src/hooks/useAuth";
 import Image from "next/image";
 import LightBox from "../../ui/LightBox";
+import { usePath } from "@/src/hooks/usePath";
+import { navLandingPageLinks } from "@/src/constants/nav-links";
 
 const Navbar = () => {
-   const pathName = usePathname();
-   const navLinks = [
-      { href: "/", label: "Home" },
-      { href: "/sel_program", label: "SEL Program" },
-      { href: "/get-involved", label: "Get Involved" },
-      { href: "/about", label: "About" },
-      { href: "/blog", label: "Blog" },
-   ];
+   const { pathName } = usePath();
+  
    const { user, isAuthenticated, login, logout } = useAuth();
    const [onClick, setOnClick] = useState(false);
 
@@ -36,7 +31,7 @@ const Navbar = () => {
             </Link>
 
             <div className="hidden md:flex gap-4">
-               {navLinks.map((link) => (
+               {navLandingPageLinks.map((link) => (
                   <Link key={link.href} href={link.href}>
                      <Button
                         variant={pathName === link.href ? "active" : "text"}
@@ -107,7 +102,7 @@ const Navbar = () => {
                   className="lg:hidden overflow-hidden bg-card"
                >
                   <nav className="flex flex-col p-4 gap-1">
-                     {navLinks.map((link) => (
+                     {navLandingPageLinks.map((link) => (
                         <Link
                            key={link.href}
                            href={link.href}
