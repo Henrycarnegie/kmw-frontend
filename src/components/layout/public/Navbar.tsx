@@ -15,7 +15,7 @@ import { navLandingPageLinks } from "@/src/constants/nav-links";
 const Navbar = () => {
    const { pathName } = usePath();
 
-   const { user, isAuthenticated, login, logout } = useAuth();
+   const { user, isAuthenticated, logout } = useAuth();
    const [onClick, setOnClick] = useState(false);
 
    const [openLightBox, setOpenLightBox] = useState(false);
@@ -45,9 +45,9 @@ const Navbar = () => {
             <div className="hidden md:flex gap-4">
                {/* Login */}
                {!isAuthenticated ? (
-                  <Button variant="primary" onClick={login}>
-                     Login / Signup
-                  </Button>
+                  <Link href={"/login"}>
+                     <Button variant="primary">Login / Signup</Button>
+                  </Link>
                ) : (
                   <div className="relative">
                      <Button
@@ -127,9 +127,9 @@ const Navbar = () => {
                            </Button>
                         </Link>
                         {!isAuthenticated ? (
-                           <Button variant="primary" onClick={login}>
-                              Login
-                           </Button>
+                           <Link href={"/login"}>
+                              <Button variant="primary">Login / Signup</Button>
+                           </Link>
                         ) : (
                            <Button variant="text">
                               {user?.image && (
