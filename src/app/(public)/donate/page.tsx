@@ -111,7 +111,7 @@ export default function DonatePage() {
                                     setCustomAmount(e.target.value);
                                     setAmount(null);
                                  }}
-                                 className={`text-lg font-bold`}
+                                 className={`text-lg font-bold pl-8`}
 
                               />
                            </div>

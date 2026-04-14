@@ -1,14 +1,12 @@
-import React from 'react'
+import Searchbar from "@/src/components/ui/Searchbar";
 
-const page = () => {
-  return (
-    <section>
-        <h1>Dashboard</h1>
-        <h1>Dashboard</h1>
-        <h1>Dashboard</h1>
-    
-    </section>
-  )
-}
 
-export default page
+const Page = () => {
+   return (
+      <section>
+         <Searchbar />
+      </section>
+   );
+};
+
+export default Page;

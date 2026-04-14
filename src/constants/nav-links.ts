@@ -1,4 +1,18 @@
-export const navLandingPageLinks = [
+import { BoxIcon, ClipboardList, Home, Mic2Icon } from "lucide-react";
+import { LucideIcon } from "lucide-react";
+
+type NavLink = {
+   href: string;
+   label: string;
+};
+
+type SidebarLink = {
+   href: string;
+   label: string;
+   icon: LucideIcon;
+};
+
+export const navLandingPageLinks: NavLink[] = [
    { href: "/", label: "Home" },
    { href: "/sel_program", label: "SEL Program" },
    { href: "/get-involved", label: "Get Involved" },
@@ -6,10 +20,9 @@ export const navLandingPageLinks = [
    { href: "/blog", label: "Blog" },
 ];
 
-export const navSidebarLinks = [
-   { href: "/member", label: "Dashboard" },
-   { href: "/member/course", label: "Courses" },
-   { href: "/member/webinar", label: "Webinar" },
-   { href: "/member/resources", label: "Resources" },
+export const navSidebarLinks: SidebarLink[] = [
+   { href: "/member", label: "Dashboard", icon: Home },
+   { href: "/member/course", label: "Courses", icon: ClipboardList },
+   { href: "/member/webinar", label: "Webinar", icon: Mic2Icon },
+   { href: "/member/resources", label: "Resources", icon: BoxIcon },
 ];
-

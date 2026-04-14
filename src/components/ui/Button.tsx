@@ -21,7 +21,7 @@ export default function Button({
       primary:
          "bg-blue-50 border border-blue-100 text-blue-900 hover:bg-blue-100",
       secondary: "bg-blue-600 font-extrabold text-white hover:bg-blue-700",
-      danger: "bg-red-600 text-white hover:bg-red-700",
+      danger: "bg-red-500 text-white hover:bg-red-600",
       outline:
          "bg-white border border-gray-200 text-gray-700 hover:border-gray-300",
       active: "bg-sky-100 text-sky-700 hover:bg-sky-200",

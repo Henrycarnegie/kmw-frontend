@@ -6,7 +6,7 @@ export const useAuth = () => {
    const { data: session, status } = useSession();
 
    const login = () => {
-      signIn("google", { callbackUrl: "/member" });
+      signIn("google", { callbackUrl: "/" });
    };
 
    const logout = () => {

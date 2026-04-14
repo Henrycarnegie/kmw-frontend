@@ -14,7 +14,7 @@ import { navLandingPageLinks } from "@/src/constants/nav-links";
 
 const Navbar = () => {
    const { pathName } = usePath();
-  
+
    const { user, isAuthenticated, login, logout } = useAuth();
    const [onClick, setOnClick] = useState(false);
 
@@ -46,7 +46,7 @@ const Navbar = () => {
                {/* Login */}
                {!isAuthenticated ? (
                   <Button variant="primary" onClick={login}>
-                     Login
+                     Login / Signup
                   </Button>
                ) : (
                   <div className="relative">
@@ -70,7 +70,9 @@ const Navbar = () => {
                         <LightBox onClick={() => setOpenLightBox(false)}>
                            <div className="flex flex-col gap-4">
                               {user?.email}
-                              <Button variant="primary">Courses</Button>
+                              <Link href={"/member"}>
+                                 <Button variant="primary">Courses</Button>
+                              </Link>
                               <Button variant="danger" onClick={logout}>
                                  Logout
                               </Button>
