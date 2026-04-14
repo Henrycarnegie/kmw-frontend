@@ -1,51 +1,59 @@
 import React from "react";
 
-interface TextInputProps {
-   placeholder: string;
-   name: string;
-   type?: string;
-   className?: string;
+type BaseProps = {
    textarea?: boolean;
+   className?: string;
    disabled?: boolean;
    required?: boolean;
-}
+};
 
-const TextInput = ({
-   required = true,
-   disabled = false,
-   placeholder,
-   textarea = false,
-   type = "text",
-   className = "",
-   name,
-   ...props
-}: TextInputProps &
-   React.InputHTMLAttributes<HTMLInputElement> &
-   React.TextareaHTMLAttributes<HTMLTextAreaElement>) => {
-   const baseClasses =
-      "bg-white text-gray-900 w-full rounded-md border border-gray-300 py-3 pl-4 pr-4 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed transition-colors";
-   return textarea ? (
-      <textarea
-         required={required}
-         disabled={disabled}
-         name={name}
-         placeholder={placeholder}
-         className={` ${baseClasses} ${className}`}
-         minLength={60}
-         maxLength={525}
-         {...props}
-      />
-   ) : (
+type InputProps = BaseProps &
+   React.InputHTMLAttributes<HTMLInputElement>;
+
+type TextareaProps = BaseProps &
+   React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
+      textarea: true;
+   };
+
+type TextInputProps = InputProps | TextareaProps;
+
+const baseClasses =
+   "bg-white text-gray-900 w-full rounded-md border border-gray-300 py-3 px-4 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed transition-colors";
+
+const TextInput = React.forwardRef<
+   HTMLInputElement | HTMLTextAreaElement,
+   TextInputProps
+>((props, ref) => {
+   const {
+      textarea,
+      className = "",
+      disabled = false,
+      required = true,
+      ...rest
+   } = props;
+    if (textarea) {
+      return (
+         <textarea
+            ref={ref as React.Ref<HTMLTextAreaElement>}
+            className={`${baseClasses} ${className}`}
+            disabled={disabled}
+            required={required}
+            {...(rest as React.TextareaHTMLAttributes<HTMLTextAreaElement>)}
+         />
+      );
+   }
+
+   return (
       <input
-         required={required}
+         ref={ref as React.Ref<HTMLInputElement>}
+         className={`${baseClasses} ${className}`}
          disabled={disabled}
-         name={name}
-         placeholder={placeholder}
-         type={type}
-         className={` ${baseClasses} ${className}`}
-         {...props}
+         required={required}
+         {...(rest as React.InputHTMLAttributes<HTMLInputElement>)}
       />
    );
-};
+});
+
+TextInput.displayName = "TextInput";
 
 export default TextInput;

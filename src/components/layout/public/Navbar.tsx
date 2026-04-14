@@ -127,22 +127,36 @@ const Navbar = () => {
                            </Button>
                         </Link>
                         {!isAuthenticated ? (
-                           <Link href={"/login"}>
-                              <Button variant="primary">Login / Signup</Button>
+                           <Link href={"/login"} >
+                              <Button variant="primary" className="mt-2">Login / Signup</Button>
                            </Link>
                         ) : (
-                           <Button variant="text">
-                              {user?.image && (
-                                 <Image
-                                    src={user.image}
-                                    alt={user.name || "User"}
-                                    width={24}
-                                    height={24}
-                                    className="rounded-full"
-                                 />
-                              )}
-                              {user?.name}
-                           </Button>
+                           <>
+                              <span className="flex items-center gap-2 text-center text-gray-500 my-2 mt-4 text-sm">
+                                 <div className="w-full h-px bg-black" /> profile{" "}
+                                 <div className="w-full h-px bg-black" />
+                              </span>
+                              <Button variant="text">
+                                 {user?.image && (
+                                    <Image
+                                       src={user.image}
+                                       alt={user.name || "User"}
+                                       width={24}
+                                       height={24}
+                                       className="rounded-full"
+                                    />
+                                 )}
+                                 {user?.name}
+                              </Button>
+                              <div className="flex flex-col gap-4">
+                                 <Link href={"/member"}>
+                                    <Button variant="primary">Courses</Button>
+                                 </Link>
+                                 <Button variant="danger" onClick={logout}>
+                                    Logout
+                                 </Button>
+                              </div>
+                           </>
                         )}
                      </div>
                   </nav>
