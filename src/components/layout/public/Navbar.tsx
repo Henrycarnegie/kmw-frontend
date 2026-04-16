@@ -66,19 +66,37 @@ const Navbar = () => {
                         {user?.name}
                      </Button>
 
-                     {openLightBox && (
-                        <LightBox onClick={() => setOpenLightBox(false)}>
-                           <div className="flex flex-col gap-4">
-                              {user?.email}
-                              <Link href={"/member"}>
-                                 <Button variant="primary">Courses</Button>
-                              </Link>
-                              <Button variant="danger" onClick={logout}>
-                                 Logout
-                              </Button>
-                           </div>
-                        </LightBox>
-                     )}
+                     <AnimatePresence>
+                        {openLightBox && (
+                           <LightBox onClick={() => setOpenLightBox(false)}>
+                              <div className="px-2 py-2 w-full">
+                                 <div className="px-2 pb-3 mb-2 border-b border-gray-100 flex flex-col">
+                                    {user?.name && <span className="text-sm font-semibold text-gray-800">{user.name}</span>}
+                                    <span className="text-xs text-gray-500 font-medium truncate">{user?.email}</span>
+                                 </div>
+                                 <div className="space-y-1">
+                                    <Link href={"/member"} className="block">
+                                       <button className="w-full text-left px-3 py-2.5 text-sm font-medium text-gray-700 rounded-xl hover:bg-black/5 hover:text-black transition-colors duration-200 flex items-center justify-between group">
+                                          <span>Courses</span>
+                                          <svg className="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                          </svg>
+                                       </button>
+                                    </Link>
+                                    <button 
+                                       onClick={(e) => { e.stopPropagation(); logout(); }} 
+                                       className="w-full text-left px-3 py-2.5 text-sm font-medium text-red-600 rounded-xl hover:bg-red-50 hover:text-red-700 transition-colors duration-200 flex items-center justify-between group"
+                                    >
+                                       <span>Logout</span>
+                                       <svg className="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                       </svg>
+                                    </button>
+                                 </div>
+                              </div>
+                           </LightBox>
+                        )}
+                     </AnimatePresence>
                   </div>
                )}
                <Link href={"/donate"}>
