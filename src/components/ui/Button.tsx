@@ -1,9 +1,12 @@
+import { LucideIcon } from "lucide-react";
+
 interface ButtonProps {
    children: React.ReactNode;
    className?: string;
    variant?: "primary" | "secondary" | "danger" | "active" | "text" | "outline";
    size?: "sm" | "md" | "lg";
    disabled?: boolean;
+   icon?: LucideIcon;
 }
 
 export default function Button({
@@ -12,14 +15,15 @@ export default function Button({
    variant = "primary",
    size = "md",
    disabled = false,
+   icon: Icon,
    ...props
 }: ButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>) {
    const baseStyle =
-      "w-full text-left md:text-center rounded-lg font-medium flex items-center justify-center gap-2 transition focus:outline-none disabled:bg-gray-300 disabled:text-gray-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer";
+      "group w-full text-left rounded-lg font-medium flex items-center justify-center gap-2 transition-colors duration-200 focus:outline-none disabled:bg-gray-300 disabled:text-gray-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer";
 
    const variants = {
       primary:
-         "bg-blue-50 border border-blue-100 text-blue-900 hover:bg-blue-100",
+         "bg-sky-500 border border-sky-100 text-white hover:bg-sky-600",
       secondary: "bg-blue-600 font-extrabold text-white hover:bg-blue-700",
       danger: "bg-red-500 text-white hover:bg-red-600",
       outline:
@@ -41,6 +45,7 @@ export default function Button({
          {...props}
       >
          {children}
+         {Icon && <Icon className="size-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200" />}
       </button>
    );
 }

@@ -3,7 +3,7 @@ import { useAuth } from "@/src/hooks/useAuth";
 import Link from "next/link";
 import { usePath } from "@/src/hooks/usePath";
 import { navSidebarLinks } from "@/src/constants/nav-links";
-import { Globe2 } from "lucide-react";
+import Image from "next/image";
 
 const Sidebar = () => {
    const { pathName } = usePath();
@@ -14,7 +14,7 @@ const Sidebar = () => {
       <div className="w-64 bg-white h-screen border-r border-gray-200 shadow-md">
          <Link href="/" className="w-full border-b border-gray-200">
             <div className="flex items-center gap-3 px-4 py-4">
-               <Globe2 className="size-6 text-blue-500 shrink-0" />
+               <Image src="/logo.png" alt="Logo" width={40} height={40} />{" "}
                <span className="font-semibold text-gray-800 text-base leading-none">
                   Know My World
                </span>
