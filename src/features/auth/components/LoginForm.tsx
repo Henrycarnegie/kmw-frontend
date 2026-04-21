@@ -10,7 +10,7 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 
 type FormValue = {
-   email: string;
+   identifier: string;
    password: string;
 };
 
@@ -23,8 +23,22 @@ const LoginForm = () => {
       formState: { errors },
    } = useForm<FormValue>();
 
-   const onSubmit = (data: FormValue) => {
-      console.log("FORM DATA:", data);
+   const onSubmit = async (data: FormValue) => {
+      const response = await fetch("http://localhost:1337/api/auth/local", {
+         method: "POST",
+         headers: {
+            "Content-Type": "application/json",
+         },
+         body: JSON.stringify(data),
+      });
+
+      const responseData = await response.json();
+
+      if (response.ok) {
+         console.log("Login successful:", responseData);
+      } else {
+         console.error("Login failed:", responseData);
+      }
    };
 
    return (
@@ -45,15 +59,15 @@ const LoginForm = () => {
             <div className="flex flex-col">
                <InputLabel label="Email" />
                <TextInput
-               type="email"
+                  type="text"
                   placeholder="Email"
-                  {...register("email", {
+                  {...register("identifier", {
                      required: "Email is required",
                   })}
                />
-               {errors.email && (
+               {errors.identifier && (
                   <span className="text-red-500 text-sm">
-                     {errors.email.message}
+                     {errors.identifier.message}
                   </span>
                )}
             </div>
@@ -79,7 +93,7 @@ const LoginForm = () => {
             </div>
 
             <Button type="submit" variant="primary">
-               Sign Up
+               Login
             </Button>
          </form>
 

@@ -32,7 +32,6 @@ const Navbar = () => {
             </Link>
 
             <div className="hidden md:flex gap-4">
-               
                {navLandingPageLinks.map((link) => (
                   <Link key={link.href} href={link.href}>
                      <Button
@@ -101,15 +100,14 @@ const Navbar = () => {
                                           Courses
                                        </Button>
                                     </Link>
-                                    <Link href={"/logout"} className="block">
-                                       <Button
-                                          variant="text"
-                                          className="w-full justify-between! text-red-600 hover:bg-red-50 hover:text-red-700"
-                                          icon={LogOut}
-                                       >
-                                          Logout
-                                       </Button>
-                                    </Link>
+                                    <Button
+                                       variant="text"
+                                       className="w-full justify-between! text-red-600 hover:bg-red-50 hover:text-red-700"
+                                       icon={LogOut}
+                                       onClick={logout}
+                                    >
+                                       Logout
+                                    </Button>
                                  </div>
                               </div>
                            </LightBox>

@@ -10,11 +10,10 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 
 type FormValue = {
+   username: string;
    email: string;
-   firstName: string;
-   lastName: string;
    password: string;
-   confirmPassword: string;
+   // confirmPassword: string;
 }
 
 const SignupForm = () => {
@@ -27,8 +26,17 @@ const SignupForm = () => {
   } = useForm<FormValue>();
 
 
-   const onSubmit = (data: FormValue) => {
-      console.log("FORM DATA:", data);
+   const onSubmit = async (data: FormValue) => {
+      // POST "http://localhost:1337/api/auth/local/register" with body data;
+      const response = await fetch("http://localhost:1337/api/auth/local/register", {
+         method: "POST",
+         headers: {
+            "Content-Type": "application/json",
+         },
+         body: JSON.stringify(data),
+      });
+      const result = await response.json();
+      console.log(result);
    };
 
    return (
@@ -44,6 +52,21 @@ const SignupForm = () => {
 
          <form className="flex flex-col gap-4 mb-8" onSubmit={handleSubmit(onSubmit)}>
             <div className="flex flex-col">
+               <InputLabel label="Username" />
+               <TextInput
+                  type="text"
+                  placeholder="Username"
+                  {...register("username", {
+                     required: "Username is required",
+                  })}
+               />
+               {errors.username && (
+                  <span className="text-red-500 text-sm">
+                     {errors.username.message}
+                  </span>
+               )}
+            </div>
+            <div className="flex flex-col">
                <InputLabel label="Email" />
                <TextInput
                   type="email"
@@ -58,7 +81,7 @@ const SignupForm = () => {
                   </span>
                )}
             </div>
-            <div className="flex flex-col">
+            {/* <div className="flex flex-col">
                <InputLabel label="First Name" />
                <TextInput
                   type="text"
@@ -87,7 +110,7 @@ const SignupForm = () => {
                      {errors.lastName.message}
                   </span>
                )}
-            </div>
+            </div> */}
             <div className="flex flex-col">
                <InputLabel label="Password" />
                <TextInput
@@ -107,7 +130,7 @@ const SignupForm = () => {
                   </span>
                )}
             </div>
-            <div className="flex flex-col">
+            {/* <div className="flex flex-col">
                <InputLabel label="Confirm Password" />
                <TextInput
                   type="password"
@@ -125,9 +148,9 @@ const SignupForm = () => {
                      {errors.confirmPassword.message}
                   </span>
                )}
-            </div>
+            </div> */}
             <Button type="submit" variant="primary">
-               Login
+               Sign Up
             </Button>
          </form>
 
