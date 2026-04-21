@@ -1,36 +1,44 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight, LogOut, Menu } from "lucide-react";
 import Link from "next/link";
 import Button from "../../ui/Button";
-import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { useAuth } from "@/src/hooks/useAuth";
 import Image from "next/image";
 import LightBox from "../../ui/LightBox";
 import { usePath } from "@/src/hooks/usePath";
 import { navLandingPageLinks } from "@/src/constants/nav-links";
+import useActiveUser from "@/src/hooks/useActiveUser";
+import { useGoogleAuth } from "@/src/hooks/useGoogleAuth";
 
 const Navbar = () => {
    const { pathName } = usePath();
-
-   const { user, isAuthenticated, logout } = useAuth();
    const [onClick, setOnClick] = useState(false);
-
    const [openLightBox, setOpenLightBox] = useState(false);
+   const { logout } = useGoogleAuth();
+
+   // 🔥 derived value (NO STATE, NO ERROR)
+   const activeUser = useActiveUser();
+
+   // const jwt =
+   //    typeof window !== "undefined" ? localStorage.getItem("jwt") : null;
+
+   // const isAuthenticated = !!jwt;
 
    return (
       <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/90 backdrop-blur-md px-5 md:px-10 py-4">
-         <nav className="flex items-center justify-between bg">
+         <nav className="flex items-center justify-between">
+            {/* LOGO */}
             <Link
-               href={"/"}
+               href="/"
                className="inline-flex items-center gap-2 font-semibold"
             >
-               <Image src="/logo.png" alt="Logo" width={40} height={40} /> Know
-               My World
+               <Image src="/logo.png" alt="Logo" width={40} height={40} />
+               Know My World
             </Link>
 
+            {/* MENU */}
             <div className="hidden md:flex gap-4">
                {navLandingPageLinks.map((link) => (
                   <Link key={link.href} href={link.href}>
@@ -41,8 +49,9 @@ const Navbar = () => {
                      </Button>
                   </Link>
                ))}
-               {isAuthenticated && (
-                  <Link href={"/member"}>
+
+               {activeUser?.confirmed && (
+                  <Link href="/member">
                      <Button
                         variant={pathName === "/member" ? "active" : "outline"}
                      >
@@ -52,10 +61,10 @@ const Navbar = () => {
                )}
             </div>
 
+            {/* RIGHT */}
             <div className="hidden md:flex gap-4">
-               {/* Login */}
-               {!isAuthenticated ? (
-                  <Link href={"/login"}>
+               {!activeUser?.confirmed ? (
+                  <Link href="/login">
                      <Button variant="primary">Login / Signup</Button>
                   </Link>
                ) : (
@@ -64,16 +73,7 @@ const Navbar = () => {
                         variant="text"
                         onClick={() => setOpenLightBox((prev) => !prev)}
                      >
-                        {user?.image && (
-                           <Image
-                              src={user.image}
-                              alt={user.name || "User"}
-                              width={24}
-                              height={24}
-                              className="rounded-full"
-                           />
-                        )}
-                        {user?.name}
+                        {activeUser?.username}
                      </Button>
 
                      <AnimatePresence>
@@ -81,17 +81,16 @@ const Navbar = () => {
                            <LightBox onClick={() => setOpenLightBox(false)}>
                               <div className="px-2 py-2 w-full">
                                  <div className="px-2 pb-3 mb-2 border-b border-gray-100 flex flex-col">
-                                    {user?.name && (
-                                       <span className="text-sm font-semibold text-gray-800">
-                                          {user.name}
-                                       </span>
-                                    )}
-                                    <span className="text-xs text-gray-500 font-medium truncate">
-                                       {user?.email}
+                                    <span className="text-sm font-semibold text-gray-800">
+                                       {activeUser?.username}
+                                    </span>
+                                    <span className="text-xs text-gray-500 truncate">
+                                       {activeUser?.email}
                                     </span>
                                  </div>
+
                                  <div className="space-y-1">
-                                    <Link href={"/member"} className="block">
+                                    <Link href="/member">
                                        <Button
                                           variant="text"
                                           className="w-full justify-between!"
@@ -100,11 +99,15 @@ const Navbar = () => {
                                           Courses
                                        </Button>
                                     </Link>
+
                                     <Button
                                        variant="text"
-                                       className="w-full justify-between! text-red-600 hover:bg-red-50 hover:text-red-700"
+                                       className="w-full justify-between! text-red-600"
                                        icon={LogOut}
-                                       onClick={logout}
+                                       onClick={() => {
+                                          logout();
+                                          setOpenLightBox(false);
+                                       }}
                                     >
                                        Logout
                                     </Button>
@@ -115,20 +118,24 @@ const Navbar = () => {
                      </AnimatePresence>
                   </div>
                )}
-               <Link href={"/donate"}>
+
+               <Link href="/donate">
                   <Button variant="secondary">Donate</Button>
                </Link>
             </div>
 
+            {/* MOBILE */}
             <div className="md:hidden">
                <Button
                   variant="text"
                   onClick={() => setOnClick((prev) => !prev)}
                >
-                  {<Menu className="size-8"></Menu>}
+                  <Menu className="size-8" />
                </Button>
             </div>
          </nav>
+
+         {/* MOBILE MENU */}
          <AnimatePresence>
             {onClick && (
                <motion.div
@@ -154,48 +161,43 @@ const Navbar = () => {
                            </Button>
                         </Link>
                      ))}
-                     <div className="md:hidden w-full space-y-4">
-                        <Link href={"/donate"} className="w-full">
-                           <Button variant="secondary" className="text-center!">
-                              Donate
+
+                     <Link href="/donate">
+                        <Button variant="secondary" className="w-full">
+                           Donate
+                        </Button>
+                     </Link>
+
+                     {!activeUser?.confirmed ? (
+                        <Link href="/login">
+                           <Button variant="primary" className="w-full">
+                              Login / Signup
                            </Button>
                         </Link>
-                        {!isAuthenticated ? (
-                           <Link href={"/login"}>
-                              <Button variant="primary" className="mt-2">
-                                 Login / Signup
+                     ) : (
+                        <>
+                           <div className="text-center text-sm text-gray-500 my-2">
+                              {activeUser?.username}
+                           </div>
+
+                           <Link href="/member">
+                              <Button variant="primary" className="w-full">
+                                 Courses
                               </Button>
                            </Link>
-                        ) : (
-                           <>
-                              <span className="flex items-center gap-2 text-center text-gray-500 my-2 mt-4 text-sm">
-                                 <div className="w-full h-px bg-black" />{" "}
-                                 profile{" "}
-                                 <div className="w-full h-px bg-black" />
-                              </span>
-                              <Button variant="text">
-                                 {user?.image && (
-                                    <Image
-                                       src={user.image}
-                                       alt={user.name || "User"}
-                                       width={24}
-                                       height={24}
-                                       className="rounded-full"
-                                    />
-                                 )}
-                                 {user?.name}
-                              </Button>
-                              <div className="flex flex-col gap-4">
-                                 <Link href={"/member"}>
-                                    <Button variant="primary">Courses</Button>
-                                 </Link>
-                                 <Button variant="danger" onClick={logout}>
-                                    Logout
-                                 </Button>
-                              </div>
-                           </>
-                        )}
-                     </div>
+
+                           <Button
+                              variant="danger"
+                              className="w-full"
+                              onClick={() => {
+                                 logout();
+                                 setOnClick(false);
+                              }}
+                           >
+                              Logout
+                           </Button>
+                        </>
+                     )}
                   </nav>
                </motion.div>
             )}

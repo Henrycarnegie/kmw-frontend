@@ -3,40 +3,73 @@
 import Button from "@/src/components/ui/Button";
 import InputLabel from "@/src/components/ui/InputLabel";
 import TextInput from "@/src/components/ui/TextInput";
-import { useAuth } from "@/src/hooks/useAuth";
+import { useGoogleAuth } from "@/src/hooks/useGoogleAuth";
 import { Globe2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 
 type FormValue = {
    username: string;
    email: string;
    password: string;
-   // confirmPassword: string;
-}
+};
+
+const backendUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 const SignupForm = () => {
-   const { login } = useAuth();
+   const router = useRouter();
+   const { login, loginWithGoogle } = useGoogleAuth();
+   const [error, setError] = useState<string | null>(null);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormValue>();
-
+   const {
+      register,
+      handleSubmit,
+      formState: { errors },
+   } = useForm<FormValue>();
 
    const onSubmit = async (data: FormValue) => {
-      // POST "http://localhost:1337/api/auth/local/register" with body data;
-      const response = await fetch("http://localhost:1337/api/auth/local/register", {
-         method: "POST",
-         headers: {
-            "Content-Type": "application/json",
-         },
-         body: JSON.stringify(data),
-      });
-      const result = await response.json();
-      console.log(result);
+      setError(null);
+      try {
+         const response = await fetch(`${backendUrl}/api/auth/local/register`, {
+            method: "POST",
+            headers: {
+               "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+         });
+
+         const result = await response.json();
+
+         if (response.ok) {
+            console.log("Signup successful, logging in...");
+            // Automatically login after signup
+            const loginResult = await login({
+               identifier: data.email,
+               password: data.password,
+            });
+
+            if (loginResult?.error) {
+               setError(
+                  "Signup successful, but auto-login failed. Please login manually.",
+               );
+               router.push("/login");
+            } else {
+               router.push("/");
+               router.refresh();
+            }
+         } else {
+            console.error("Signup failed:", result);
+            setError(
+               result.error?.message || "Signup failed. Please try again.",
+            );
+         }
+      } catch (err) {
+         console.error("Signup error:", err);
+         setError("An unexpected error occurred. Please try again.");
+      }
    };
 
    return (
@@ -50,7 +83,15 @@ const SignupForm = () => {
 
          <h1 className="text-4xl font-extrabold">Create Account</h1>
 
-         <form className="flex flex-col gap-4 mb-8" onSubmit={handleSubmit(onSubmit)}>
+         <form
+            className="flex flex-col gap-4 mb-8"
+            onSubmit={handleSubmit(onSubmit)}
+         >
+            {error && (
+               <div className="p-3 bg-red-100 text-red-600 rounded text-sm">
+                  {error}
+               </div>
+            )}
             <div className="flex flex-col">
                <InputLabel label="Username" />
                <TextInput
@@ -81,36 +122,6 @@ const SignupForm = () => {
                   </span>
                )}
             </div>
-            {/* <div className="flex flex-col">
-               <InputLabel label="First Name" />
-               <TextInput
-                  type="text"
-                  placeholder="First Name"
-                  {...register("firstName", {
-                     required: "First Name is required",
-                  })}
-               />
-               {errors.firstName && (
-                  <span className="text-red-500 text-sm">
-                     {errors.firstName.message}
-                  </span>
-               )}
-            </div>
-            <div className="flex flex-col">
-               <InputLabel label="Last Name" />
-               <TextInput
-                  type="text"
-                  placeholder="Last Name"
-                  {...register("lastName", {
-                     required: "Last Name is required",
-                  })}
-               />
-               {errors.lastName && (
-                  <span className="text-red-500 text-sm">
-                     {errors.lastName.message}
-                  </span>
-               )}
-            </div> */}
             <div className="flex flex-col">
                <InputLabel label="Password" />
                <TextInput
@@ -130,25 +141,6 @@ const SignupForm = () => {
                   </span>
                )}
             </div>
-            {/* <div className="flex flex-col">
-               <InputLabel label="Confirm Password" />
-               <TextInput
-                  type="password"
-                  placeholder="Confirm Password"
-                  {...register("confirmPassword", {
-                     required: "Confirm Password is required",
-                     minLength: {
-                        value: 6,
-                        message: "Confirm Password minimun 6 characters",
-                     },
-                  })}
-               />
-               {errors.confirmPassword && (
-                  <span className="text-red-500 text-sm">
-                     {errors.confirmPassword.message}
-                  </span>
-               )}
-            </div> */}
             <Button type="submit" variant="primary">
                Sign Up
             </Button>
@@ -168,20 +160,23 @@ const SignupForm = () => {
                <div className="w-full h-px bg-gray-300" /> or{" "}
                <div className="w-full h-px bg-gray-300" />
             </span>
+
+            {/* Temporarily Disabled Google Auth Section */}
             <Button
                type="button"
                variant="outline"
-               className="flex items-center gap-2 border-black!"
-               onClick={login}
+               className="flex items-center gap-2 border-black! opacity-50 cursor-not-allowed"
+               disabled
+               onClick={loginWithGoogle}
             >
                <Image
                   src="https://www.svgrepo.com/show/475656/google-color.svg"
-                  className="w-5 h-5"
+                  className="w-5 h-5 grayscale"
                   alt="Google"
-                  width={800}
-                  height={800}
+                  width={20}
+                  height={20}
                />
-               Sign in with Google
+               Sign in with Google (Soon)
             </Button>
          </div>
       </div>

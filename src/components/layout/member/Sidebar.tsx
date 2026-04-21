@@ -1,5 +1,5 @@
 import Button from "../../ui/Button";
-import { useAuth } from "@/src/hooks/useAuth";
+import { useAuth } from "@/src/hooks/useGoogleAuth";
 import Link from "next/link";
 import { usePath } from "@/src/hooks/usePath";
 import { navSidebarLinks } from "@/src/constants/nav-links";
