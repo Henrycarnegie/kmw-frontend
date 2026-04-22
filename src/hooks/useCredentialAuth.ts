@@ -16,7 +16,9 @@ export const useCredentialAuth = () => {
    useEffect(() => {
       fetch("/api/me")
          .then(async (res) => {
-            if (!res.ok) throw new Error("Unauthorized");
+            if (res.status === 401) {
+               return null;
+            }
             return res.json();
          })
          .then((data) => {

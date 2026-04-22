@@ -1,14 +1,14 @@
 import Button from "../../ui/Button";
-import { useAuth } from "@/src/hooks/useGoogleAuth";
 import Link from "next/link";
 import { usePath } from "@/src/hooks/usePath";
 import { navSidebarLinks } from "@/src/constants/nav-links";
 import Image from "next/image";
+import { useCredentialAuth } from "@/src/hooks/useCredentialAuth";
 
 const Sidebar = () => {
    const { pathName } = usePath();
 
-   const { logout } = useAuth();
+   const { logout } = useCredentialAuth();
 
    return (
       <div className="w-64 bg-white h-screen border-r border-gray-200 shadow-md">
