@@ -1,43 +1,39 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 type User = {
-   jwt: string | null;
-   username: string | null;
-   email: string | null;
-};
-
-const backendUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-
-// ambil user langsung dari localStorage
-const getUser = (): User | null => {
-   if (typeof window === "undefined") return null;
-
-   const jwt = localStorage.getItem("jwt");
-   const username = localStorage.getItem("username");
-   const email = localStorage.getItem("email");
-
-   if (!jwt) return null;
-
-   return { jwt, username, email };
+   id: number;
+   username: string;
+   email: string;
 };
 
 export const useCredentialAuth = () => {
    const [user, setUser] = useState<User | null>(null);
-   const [isLogged, setIsLogged] = useState(false);
+   const [isLogged, setIsLogged] = useState<boolean | null>(null);
+   const [loading, setLoading] = useState(true);
 
    useEffect(() => {
-      const storedUser = getUser();
-      setUser(storedUser);
-      setIsLogged(!!storedUser?.jwt);
+      fetch("/api/me")
+         .then(async (res) => {
+            if (!res.ok) throw new Error("Unauthorized");
+            return res.json();
+         })
+         .then((data) => {
+            setUser(data);
+            setIsLogged(true);
+         })
+         .catch(() => {
+            setUser(null);
+            setIsLogged(false);
+         })
+         .finally(() => {
+            setLoading(false);
+         });
    }, []);
 
-   const login = async (data: {
-      identifier: string;
-      password: string;
-   }) => {
-      const res = await fetch(`${backendUrl}/api/auth/local`, {
+   const login = async (data: { identifier: string; password: string }) => {
+      const res = await fetch(`/api/auth/login`, {
          method: "POST",
          headers: {
             "Content-Type": "application/json",
@@ -48,17 +44,10 @@ export const useCredentialAuth = () => {
       const result = await res.json();
 
       if (!res.ok) {
-         return { error: result.error?.message || "Login failed" };
+         return { error: result.error || "Login failed" };
       }
 
-      // simpan ke localStorage
-      localStorage.setItem("jwt", result.jwt);
-      localStorage.setItem("username", result.user.username);
-      localStorage.setItem("email", result.user.email);
-
-      // refresh UI
       window.location.href = "/";
-
       return result;
    };
 
@@ -67,7 +56,7 @@ export const useCredentialAuth = () => {
       email: string;
       password: string;
    }) => {
-      const res = await fetch(`${backendUrl}/api/auth/local/register`, {
+      const res = await fetch("/api/auth/signup", {
          method: "POST",
          headers: {
             "Content-Type": "application/json",
@@ -78,27 +67,25 @@ export const useCredentialAuth = () => {
       const result = await res.json();
 
       if (!res.ok) {
-         return { error: result.error?.message || "Signup failed" };
+         return { error: result.error };
       }
 
-      localStorage.setItem("jwt", result.jwt);
-      localStorage.setItem("username", result.user.username);
-      localStorage.setItem("email", result.user.email);
-
-      // redirect supaya Navbar update
       window.location.href = "/";
-
       return result;
    };
 
-   const logout = () => {
-      localStorage.clear();
+   const logout = async () => {
+      await fetch("/api/auth/logout", {
+         method: "POST",
+      });
+
       window.location.href = "/";
    };
 
    return {
       user,
       isLogged,
+      loading, // ✅ penting
       login,
       signup,
       logout,

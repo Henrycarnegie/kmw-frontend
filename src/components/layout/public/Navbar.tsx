@@ -18,8 +18,6 @@ const Navbar = () => {
 
    const { user, isLogged, logout } = useCredentialAuth();
 
-   console.log("user", user)
-
    return (
       <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/90 backdrop-blur-md px-5 md:px-10 py-4">
          <nav className="flex items-center justify-between">
@@ -44,28 +42,24 @@ const Navbar = () => {
                   </Link>
                ))}
 
-                  <Link href={isLogged ? "/member" : "/login"}>
-                     <Button
-                        variant={pathName === "/member" ? "active" : "outline"}
-                     >
-                        Member
-                     </Button>
-                  </Link>
+               <Link href={isLogged ? "/member" : "/login"}>
+                  <Button
+                     variant={pathName === "/member" ? "active" : "outline"}
+                  >
+                     Courses
+                  </Button>
+               </Link>
             </div>
 
             {/* RIGHT */}
             <div className="hidden md:flex gap-4">
-               {!isLogged ? (
-                  <Link href="/login">
-                     <Button variant="primary">Login / Signup</Button>
-                  </Link>
-               ) : (
+               {isLogged && user ? (
                   <div className="relative">
                      <Button
                         variant="text"
                         onClick={() => setOpenLightBox((prev) => !prev)}
                      >
-                        {user?.username}
+                        {user.username}
                      </Button>
 
                      <AnimatePresence>
@@ -74,14 +68,14 @@ const Navbar = () => {
                               <div className="px-2 py-2 w-full">
                                  <div className="px-2 pb-3 mb-2 border-b border-gray-100 flex flex-col">
                                     <span className="text-sm font-semibold text-gray-800">
-                                       {user?.username}
+                                       {user.username}
                                     </span>
                                     <span className="text-xs text-gray-500 truncate">
-                                       {user?.email}
+                                       {user.email}
                                     </span>
                                  </div>
 
-                                 <div className="space-y-1">
+                                 {/* <div className="space-y-1"> */}
                                     <Link href="/member">
                                        <Button
                                           variant="text"
@@ -92,23 +86,23 @@ const Navbar = () => {
                                        </Button>
                                     </Link>
 
-                                    <Button
-                                       variant="text"
-                                       className="w-full justify-between! text-red-600"
-                                       icon={LogOut}
-                                       onClick={() => {
-                                          logout();
-                                          setOpenLightBox(false);
-                                       }}
-                                    >
-                                       Logout
-                                    </Button>
-                                 </div>
+                                 <Button
+                                    variant="text"
+                                    className="w-full justify-between! text-red-600"
+                                    icon={LogOut}
+                                    onClick={() => logout()}
+                                 >
+                                    Logout
+                                 </Button>
                               </div>
                            </LightBox>
                         )}
                      </AnimatePresence>
                   </div>
+               ) : (
+                  <Link href="/login">
+                     <Button variant="primary">Login / Signup</Button>
+                  </Link>
                )}
 
                <Link href="/donate">
