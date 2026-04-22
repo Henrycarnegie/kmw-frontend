@@ -9,22 +9,16 @@ import Image from "next/image";
 import LightBox from "../../ui/LightBox";
 import { usePath } from "@/src/hooks/usePath";
 import { navLandingPageLinks } from "@/src/constants/nav-links";
-import useActiveUser from "@/src/hooks/useActiveUser";
-import { useGoogleAuth } from "@/src/hooks/useGoogleAuth";
+import { useCredentialAuth } from "@/src/hooks/useCredentialAuth";
 
 const Navbar = () => {
    const { pathName } = usePath();
    const [onClick, setOnClick] = useState(false);
    const [openLightBox, setOpenLightBox] = useState(false);
-   const { logout } = useGoogleAuth();
 
-   // 🔥 derived value (NO STATE, NO ERROR)
-   const activeUser = useActiveUser();
+   const { user, isLogged, logout } = useCredentialAuth();
 
-   // const jwt =
-   //    typeof window !== "undefined" ? localStorage.getItem("jwt") : null;
-
-   // const isAuthenticated = !!jwt;
+   console.log("user", user)
 
    return (
       <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/90 backdrop-blur-md px-5 md:px-10 py-4">
@@ -50,20 +44,18 @@ const Navbar = () => {
                   </Link>
                ))}
 
-               {activeUser?.confirmed && (
-                  <Link href="/member">
+                  <Link href={isLogged ? "/member" : "/login"}>
                      <Button
                         variant={pathName === "/member" ? "active" : "outline"}
                      >
                         Member
                      </Button>
                   </Link>
-               )}
             </div>
 
             {/* RIGHT */}
             <div className="hidden md:flex gap-4">
-               {!activeUser?.confirmed ? (
+               {!isLogged ? (
                   <Link href="/login">
                      <Button variant="primary">Login / Signup</Button>
                   </Link>
@@ -73,7 +65,7 @@ const Navbar = () => {
                         variant="text"
                         onClick={() => setOpenLightBox((prev) => !prev)}
                      >
-                        {activeUser?.username}
+                        {user?.username}
                      </Button>
 
                      <AnimatePresence>
@@ -82,10 +74,10 @@ const Navbar = () => {
                               <div className="px-2 py-2 w-full">
                                  <div className="px-2 pb-3 mb-2 border-b border-gray-100 flex flex-col">
                                     <span className="text-sm font-semibold text-gray-800">
-                                       {activeUser?.username}
+                                       {user?.username}
                                     </span>
                                     <span className="text-xs text-gray-500 truncate">
-                                       {activeUser?.email}
+                                       {user?.email}
                                     </span>
                                  </div>
 
@@ -168,7 +160,7 @@ const Navbar = () => {
                         </Button>
                      </Link>
 
-                     {!activeUser?.confirmed ? (
+                     {!isLogged ? (
                         <Link href="/login">
                            <Button variant="primary" className="w-full">
                               Login / Signup
@@ -177,7 +169,7 @@ const Navbar = () => {
                      ) : (
                         <>
                            <div className="text-center text-sm text-gray-500 my-2">
-                              {activeUser?.username}
+                              {user?.username}
                            </div>
 
                            <Link href="/member">

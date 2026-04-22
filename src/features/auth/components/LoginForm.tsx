@@ -10,26 +10,27 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { useCredentialAuth } from "@/src/hooks/useCredentialAuth";
 
-type FormValue = {
+type LoginForm = {
    identifier: string;
    password: string;
 };
 
-// const backendUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-
 const LoginForm = () => {
    const router = useRouter();
-   const { login, loginWithGoogle } = useGoogleAuth();
+   const { loginWithGoogle } = useGoogleAuth();
+
+   const { login } = useCredentialAuth();
    const [error, setError] = useState<string | null>(null);
 
    const {
       register,
       handleSubmit,
       formState: { errors },
-   } = useForm<FormValue>();
+   } = useForm<LoginForm>();
 
-   const onSubmit = async (data: FormValue) => {
+   const onSubmit = async (data: LoginForm) => {
       setError(null);
       const result = await login(data);
 
@@ -124,13 +125,13 @@ const LoginForm = () => {
             <Button
                type="button"
                variant="outline"
-               className="flex items-center gap-2 border-black! opacity-50 cursor-not-allowed"
-               disabled
+               className="flex items-center gap-2 cursor-pointer"
+               // disabled
                onClick={loginWithGoogle}
             >
                <Image
                   src="https://www.svgrepo.com/show/475656/google-color.svg"
-                  className="w-5 h-5 grayscale"
+                  className="w-5 h-5"
                   alt="Google"
                   width={20}
                   height={20}

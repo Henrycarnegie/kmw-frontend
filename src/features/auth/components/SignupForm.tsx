@@ -10,65 +10,39 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { useCredentialAuth } from "@/src/hooks/useCredentialAuth";
 
-type FormValue = {
+type SignupForm = {
    username: string;
    email: string;
    password: string;
 };
 
-const backendUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 const SignupForm = () => {
    const router = useRouter();
-   const { login, loginWithGoogle } = useGoogleAuth();
+   const { loginWithGoogle } = useGoogleAuth();
+   
+   const { signup } = useCredentialAuth();
    const [error, setError] = useState<string | null>(null);
 
    const {
       register,
       handleSubmit,
       formState: { errors },
-   } = useForm<FormValue>();
+   } = useForm<SignupForm>();
 
-   const onSubmit = async (data: FormValue) => {
+   const onSubmit = async (data: SignupForm) => {
       setError(null);
-      try {
-         const response = await fetch(`${backendUrl}/api/auth/local/register`, {
-            method: "POST",
-            headers: {
-               "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-         });
+      const result = await signup(data)
 
-         const result = await response.json();
-
-         if (response.ok) {
-            console.log("Signup successful, logging in...");
-            // Automatically login after signup
-            const loginResult = await login({
-               identifier: data.email,
-               password: data.password,
-            });
-
-            if (loginResult?.error) {
-               setError(
-                  "Signup successful, but auto-login failed. Please login manually.",
-               );
-               router.push("/login");
-            } else {
-               router.push("/");
-               router.refresh();
-            }
-         } else {
-            console.error("Signup failed:", result);
-            setError(
-               result.error?.message || "Signup failed. Please try again.",
-            );
-         }
-      } catch (err) {
-         console.error("Signup error:", err);
-         setError("An unexpected error occurred. Please try again.");
+      if (result?.error) {
+         console.log("Signup Failed", result.error)
+         setError(result.error)
+      } else {
+         console.log("Signup Successful");
+         router.push("/")
+         router.refresh()
       }
    };
 
