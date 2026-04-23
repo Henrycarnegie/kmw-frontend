@@ -136,7 +136,7 @@ const LoginForm = () => {
                   width={20}
                   height={20}
                />
-               Sign in with Google (Soon)
+               Sign in with Google
             </Button>
          </div>
       </div>

@@ -3,18 +3,38 @@
 import { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
+// const backendUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 export default function GoogleRedirect() {
    const router = useRouter();
    const params = useSearchParams();
 
    useEffect(() => {
-      const token = params.get("access_token");
+      const access_token = params.get("access_token");
 
-      if (token) {
-         localStorage.setItem("jwt", token);
-         router.push("/");
+      if (!access_token) {
+         router.push("/login");
+         return;
       }
-   }, [params, router]);
 
-   return <p>Logging in...</p>;
+      fetch("/api/auth/google/callback", {
+         method: "POST",
+         credentials: "include",
+         headers: {
+            "Content-Type": "application/json",
+         },
+         body: JSON.stringify({ access_token }),
+      })
+         .then((res) => {
+            if (!res.ok) throw new Error();
+            return res.json();
+         })
+         .then(() => {
+            router.push("/");
+         })
+         .catch(() => {
+            router.push("/login");
+         });
+   }, [params, router]);
+   return <p>Logging in with Google...</p>;
 }

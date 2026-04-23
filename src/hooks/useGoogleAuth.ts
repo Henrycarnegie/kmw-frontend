@@ -7,13 +7,5 @@ export const useGoogleAuth = () => {
       window.location.href = `${backendUrl}/api/connect/google`;
    };
 
-   const logout = () => {
-      localStorage.clear();
-      window.location.href = "/";
-   };
-
-   return {
-      loginWithGoogle,
-      logout,
-   };
+   return { loginWithGoogle };
 };
