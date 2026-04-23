@@ -10,13 +10,19 @@ import LightBox from "../../ui/LightBox";
 import { usePath } from "@/src/hooks/usePath";
 import { navLandingPageLinks } from "@/src/constants/nav-links";
 import { useCredentialAuth } from "@/src/hooks/useCredentialAuth";
+import { useAuth } from "@/src/app/providers/AuthProvider";
 
 const Navbar = () => {
    const { pathName } = usePath();
    const [onClick, setOnClick] = useState(false);
    const [openLightBox, setOpenLightBox] = useState(false);
 
-   const { user, isLogged, logout } = useCredentialAuth();
+   const { logout } = useCredentialAuth();
+
+   const { isLogged, user } = useAuth();
+
+   console.log(user);
+   console.log(isLogged);
 
    return (
       <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/90 backdrop-blur-md px-5 md:px-10 py-4">

@@ -1,14 +1,12 @@
 "use client";
 
 import React from "react";
-import { SessionProvider } from "next-auth/react";
+import { AuthProvider } from "../providers/AuthProvider";
 
 const layout = ({ children }: { children: React.ReactNode }) => {
    return (
       <>
-         <SessionProvider>
-            {children}
-         </SessionProvider>
+         <AuthProvider>{children}</AuthProvider>
       </>
    );
 };
