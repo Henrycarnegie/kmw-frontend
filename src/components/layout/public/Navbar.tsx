@@ -47,14 +47,6 @@ const Navbar = () => {
                      </Button>
                   </Link>
                ))}
-
-               <Link href={isLogged ? "/member" : "/login"}>
-                  <Button
-                     variant={pathName === "/member" ? "active" : "outline"}
-                  >
-                     Courses
-                  </Button>
-               </Link>
             </div>
 
             {/* RIGHT */}
@@ -174,7 +166,7 @@ const Navbar = () => {
 
                            <Link href="/member">
                               <Button variant="primary" className="w-full">
-                                 Courses
+                                 Dashboard
                               </Button>
                            </Link>
 

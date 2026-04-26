@@ -14,6 +14,7 @@ type SidebarLink = {
 
 export const navLandingPageLinks: NavLink[] = [
    { href: "/", label: "Home" },
+   { href: "/courses", label: "Courses" },
    { href: "/sel_program", label: "SEL Program" },
    { href: "/get-involved", label: "Get Involved" },
    { href: "/about", label: "About" },
@@ -22,7 +23,7 @@ export const navLandingPageLinks: NavLink[] = [
 
 export const navSidebarLinks: SidebarLink[] = [
    { href: "/member", label: "Dashboard", icon: Home },
-   { href: "/member/course", label: "Courses", icon: ClipboardList },
-   { href: "/member/webinar", label: "Webinar", icon: Mic2Icon },
-   { href: "/member/resources", label: "Resources", icon: BoxIcon },
+   { href: "/courses", label: "Courses", icon: ClipboardList },
+   { href: "/webinars", label: "Webinar", icon: Mic2Icon },
+   { href: "/resources", label: "Resources", icon: BoxIcon },
 ];
