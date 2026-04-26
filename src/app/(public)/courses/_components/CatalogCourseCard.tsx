@@ -1,10 +1,9 @@
 "use client";
 
-import Image from 'next/image';
 import { motion } from "framer-motion";
-import Button from './Button';
+import Button from '../../../../components/ui/Button';
 import { ChevronRight, Clock, User } from 'lucide-react';
-import Badge from './Badge';
+import Badge from '../../../../components/ui/Badge';
 import Link from 'next/link';
 
 interface CatalogCourseCardProps {
@@ -14,9 +13,9 @@ interface CatalogCourseCardProps {
    description: string;
    language: string;
    is_published: boolean;
-   createdAt: string;
-   updatedAt: string;
-   publishedAt: string;
+   createdAt: Date;
+   updatedAt: Date;
+   publishedAt: Date;
 }
 
 const CatalogCourseCard = ({ 
@@ -68,10 +67,10 @@ const CatalogCourseCard = ({
       <div className="p-6 flex-1 flex flex-col">
          <div className="flex items-center gap-4 mb-3 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
             <span className="flex items-center gap-1">
-               <Clock className="size-3" /> {publishedAt}
+               <Clock className="size-3" /> {new Date(publishedAt).toLocaleDateString()}
             </span>
             <span className="flex items-center gap-1">
-               <User className="size-3" /> {createdAt}
+               <User className="size-3" /> {new Date(createdAt).toLocaleDateString()}
             </span>
          </div>
 

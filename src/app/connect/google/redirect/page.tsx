@@ -3,8 +3,6 @@
 import { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-// const backendUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-
 export default function GoogleRedirect() {
    const router = useRouter();
    const params = useSearchParams();
@@ -36,5 +34,6 @@ export default function GoogleRedirect() {
             router.push("/login");
          });
    }, [params, router]);
+
    return <p>Logging in with Google...</p>;
 }

@@ -126,7 +126,6 @@ const LoginForm = () => {
                type="button"
                variant="outline"
                className="flex items-center gap-2 cursor-pointer"
-               // disabled
                onClick={loginWithGoogle}
             >
                <Image

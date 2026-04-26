@@ -12,29 +12,36 @@ export async function POST(req: Request) {
       );
    }
 
-   const res = await fetch(
-      `${backendUrl}/api/auth/google/callback?access_token=${access_token}`,
-   );
+   try {
+      const res = await fetch(
+         `${backendUrl}/api/auth/google/callback?access_token=${access_token}`,
+      );
 
-   const data = await res.json();
+      const data = await res.json();
 
-   if (!res.ok) {
-      console.error("Strapi Google Auth Error:", data);
+      if (!res.ok) {
+         console.error("Strapi Google Auth Error:", data);
+         return NextResponse.json(
+            { error: data.error?.message || "Google login failed" },
+            { status: 400 },
+         );
+      }
+
+      const response = NextResponse.json({ user: data.user });
+
+      response.cookies.set("token", data.jwt, {
+         httpOnly: true,
+         secure: process.env.NODE_ENV === "production",
+         sameSite: "lax",
+         path: "/",
+      });
+
+      return response;
+   } catch (error) {
+      console.error("Internal Error:", error);
       return NextResponse.json(
-         { error: data.error?.message || "Google login failed" },
-         { status: 400 },
+         { error: "Internal server error" },
+         { status: 500 },
       );
    }
-
-   console.log("STRAPI RESPONSE:", data);
-   const response = NextResponse.json({ user: data.user });
-
-   response.cookies.set("token", data.jwt, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/",
-   });
-
-   return response;
 }

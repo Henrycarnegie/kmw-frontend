@@ -140,7 +140,6 @@ const SignupForm = () => {
                type="button"
                variant="outline"
                className="flex items-center gap-2 border-black! opacity-50 cursor-not-allowed"
-               disabled
                onClick={loginWithGoogle}
             >
                <Image
